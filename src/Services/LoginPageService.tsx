@@ -11,7 +11,6 @@ class LoginPageService {
             axios.post(`${this.BASE_URL}/api/auth/signIn`, { ...user })
                 .then((response: AxiosResponse<any, any>) => resolve(response.data.data))
                 .catch((error) => {
-                    console.log(error.response.data.exception.message);
                     Swal.fire({
                         icon: 'error',
                         title: 'Hatalı Giriş',

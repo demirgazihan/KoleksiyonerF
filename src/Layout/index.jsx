@@ -71,7 +71,6 @@ const Layout = () => {
 
       {/*-- Footer Section starts--*/}
       <Footer />
-      <Customizer />
       {/*-- Footer Section ends--*/}
     </div>
   );

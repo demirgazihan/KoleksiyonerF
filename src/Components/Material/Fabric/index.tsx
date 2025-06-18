@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardBody, CardHeader, Table } from "reactstrap";
-import { studentsData } from "../../../Data/Datatable/studentsData";
 import { type FabricType } from "../../../Types/types"
 import { setFabrics } from '../../../Redux/fabricSlice';
 import fabricListService from "../../../Services/Material/Fabric/FabricListService"
-
+import { Link } from 'react-router-dom'
+import { MaterialRoutes } from '../../../Route/AuthRoutes'
 
 
 const FabricTable = () => {
@@ -16,12 +16,11 @@ const FabricTable = () => {
     const dispatch = useDispatch();
 
     const findFabricsGroupByName = async () => {
-        console.log("currentUser")
-        console.log(currentUser)
-        console.log(fabrics)
         try {
             const fabrics: Array<FabricType> = await fabricListService.findFabricsGroupByName();
+            console.log(fabrics)
             dispatch(setFabrics(fabrics));
+
         } catch (error: any) {
             console.log("error");
             console.log(error);
@@ -39,8 +38,9 @@ const FabricTable = () => {
     return (
         <>
             <Card>
-                <CardHeader>
+                <CardHeader className="d-flex justify-content-sm-between align-items-center">
                     <h5>Kumaş Listesi</h5>
+                    <Link to={MaterialRoutes.FABRIC_CREATE_PAGE} type="button" className="btn btn-primary">Ekle</Link>
                 </CardHeader>
                 <CardBody className="p-0">
                     <div className="app-scroll table-responsive app-datatable-default">
@@ -53,10 +53,10 @@ const FabricTable = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {studentsData.map((student, index) => (
+                                {fabrics.map((fabric: any, index: any) => (
                                     <tr key={index}>
-                                        <td>{student.name}</td>
-                                        <td>{student.date}</td>
+                                        <td>{fabric.name}</td>
+                                        <td>{fabric.count}</td>
                                         <td>
                                             <div className="btn-group dropdown-icon-none">
                                                 <button

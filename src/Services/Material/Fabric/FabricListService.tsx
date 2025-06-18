@@ -1,31 +1,36 @@
 import axios from "axios";
 import { type AxiosResponse } from "axios";
 import { type FabricType } from "../../../Types/types";
+import storageService from '../../StorageService'
 
-const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NDk2NDcxOTYsImV4cCI6MTc0OTY2NzE5Nn0.ucL2geTRR7Kp540APeAe3TZZ-BonxVWzDc7vp0dH6q0";
+const currentUser: any = storageService.read("currentUser");
 
 let headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': `Bearer ${token}`,
+    'Authorization': `Bearer ${currentUser.token}`,
 };
 let params = {
     "pageNo": 0,
-    "pageSize": 10
+    "pageSize": 1000
 }
 
 class FabricListService {
-
 
     BASE_URL = "http://localhost:9001";
     findFabricsGroupByName(): Promise<Array<FabricType>> {
         return new Promise((resolve: any, reject: any) => {
             axios.get(`${this.BASE_URL}/api/material/fabric/findFabricsGroupByName`,
                 { headers, params })
-                .then((response: AxiosResponse<any, any>) => resolve(response.data))
+                .then((response: AxiosResponse<any, any>) => resolve(response.data.data))
                 .catch((error: any) => {
-                    console.log("error")
-                    console.log(error)
+                    console.log(error.response.status != 403)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kumaşlar Listelenemedi',
+                        text: error.response.status != 403 ? error.response.data.exception.message : "",
+                        confirmButtonText: 'Tamam'
+                    })
                     reject(error)
                 });
         })
