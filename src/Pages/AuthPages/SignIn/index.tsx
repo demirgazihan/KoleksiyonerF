@@ -8,49 +8,25 @@ import type { LoginResponse, CheckType } from '../../../Types/types'
 import { setCurrentUser } from '../../../Redux/appSlice';
 import { loginSchemas } from '../../../Schemas/LoginSchemas';
 import { useFormik } from 'formik';
+import storageService from '../../../Services/StorageService'
 
 const SignIn = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const checkUser = (response: Array<LoginResponse>, email: string, password: string): CheckType => {
-        const checkResponse: CheckType = {
-            result: false,
-            user: null
+
+    const login = async () => {
+        const payload: LoginResponse = {
+            email: values.email,
+            password: values.password
         }
-        response.forEach((user: LoginResponse) => {
-            if (user.email === email && user.password === password) {
-                checkResponse.result = true;
-                checkResponse.user = user;
-            }
-        })
-        return checkResponse;
-    }
-    const login = async (email: string, password: string) => {
-        if (!email || !password) {
-            toast.warn("Bütün alanları doldurunuz");
-            return;
-        }
-        try {
-            const payload: LoginResponse = {
-                email: values.email,
-                password: values.password
-            }
-            const response = await loginPageService.login(payload);
-            if (response) {
-                const checkTypeResponse: CheckType = checkUser(response, email, password);
-                dispatch(setCurrentUser(checkTypeResponse.user));
-                navigate("/");
-            } else {
-                toast.warn("kullanıcı adı yada paralo yanlış");
-            }
-        } catch (error: any) {
-            toast.error("Login servisi hatası", error);
-        }
+        const response = await loginPageService.login(payload);
+        storageService.write("currentUser", response);
+        navigate("/");
     }
 
-    const submit = (values: any, action: any) => {
-        login(values.email, values.password);
+    const submit = () => {
+        login();
     }
 
     const { values, errors, handleSubmit, handleChange, resetForm } = useFormik({

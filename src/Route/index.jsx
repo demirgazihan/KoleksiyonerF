@@ -229,7 +229,7 @@ const Routes = () => {
     let element = [
         {
             path: "/",
-            element: <SignIn />,
+            element: <Layout />,
             children: [
                 // IndependentRoutes
                 { path: IndependentRoutes.WIDGETS_PAGE, element: <Widget /> },

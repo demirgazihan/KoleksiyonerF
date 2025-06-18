@@ -8,6 +8,13 @@ export interface AppSliceType {
     currentUser: LoginResponse | null,
 }
 
+export interface FabricType {
+    id?: number,
+    name?: string,
+    code?: string,
+    status?: string
+}
+
 export interface ProductType {
     id?: number,
     title?: string,

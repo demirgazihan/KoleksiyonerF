@@ -9,8 +9,17 @@ class LoginPageService {
     login(user: LoginResponse): Promise<LoginResponse[]> {
         return new Promise((resolve: any, reject: any) => {
             axios.post(`${this.BASE_URL}/api/auth/signIn`, { ...user })
-                .then((response: AxiosResponse<any, any>) => resolve(response.data))
-                .catch((error) => reject(error));
+                .then((response: AxiosResponse<any, any>) => resolve(response.data.data))
+                .catch((error) => {
+                    console.log(error.response.data.exception.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hatalı Giriş',
+                        text: error.response.data.exception.message,
+                        confirmButtonText: 'Tamam'
+                    })
+                    reject(error);
+                });
 
         })
     }
