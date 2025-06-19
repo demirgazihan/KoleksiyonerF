@@ -18,6 +18,7 @@ let params = {
 class FabricListService {
 
     BASE_URL = "http://localhost:9001";
+
     findFabricsGroupByName(): Promise<Array<FabricType>> {
         return new Promise((resolve: any, reject: any) => {
             axios.get(`${this.BASE_URL}/api/material/fabric/findFabricsGroupByName`,
@@ -35,6 +36,19 @@ class FabricListService {
                 });
         })
     }
+
+    createFabrics(fabrics: Array<FabricType>): Promise<Array<FabricType>> {
+        return new Promise((resolve: any, reject: any) => {
+            axios.post(`${this.BASE_URL}/api/material/fabric/create`,
+                { headers, ...fabrics })
+                .then((response: AxiosResponse<any, any>) => resolve(response.data.data))
+                .catch((error: any) => {
+                    console.log(error)
+                    reject(error)
+                });
+        })
+    }
+
 }
 
 export default new FabricListService();

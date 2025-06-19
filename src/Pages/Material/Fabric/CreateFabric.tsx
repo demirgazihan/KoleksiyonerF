@@ -1,8 +1,78 @@
 import { Col, Container, CardHeader, Row, Card, CardBody, Form, FormGroup, Button, Label, Input } from "reactstrap";
-import { Link } from 'react-router-dom'
 import { MaterialRoutes } from '../../../Route/AuthRoutes'
-
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { type FabricType } from '../../../Types/types'
+import { addFabric, deleteFabricByCode, updateFabricByCode } from "../../../Redux/fabricSlice";
+import { useSelector } from "react-redux";
+import toast from "../../..//Services/toast";
 const CreateFabric = () => {
+
+    const [code, setCode] = useState<String>("");
+    const [name, setName] = useState<String>("");
+    const [codeToEdit, setCodeToEdit] = useState<FabricType>({});
+    const [editedCode, setEditedCode] = useState<String>("");
+    const [nameDisable, setNameDisable] = useState<boolean>(false);
+    const dispatch = useDispatch();
+    const { createdFabrics } = useSelector((state: any) => state.fabric);
+
+    useEffect(() => {
+        setNameDisable(createdFabrics.length == 0 ? false : true);
+        console.log(createdFabrics)
+    }, [createdFabrics]);
+
+    const handleAddFabric = () => {
+        if (code.trim().length > 0 && name.trim().length > 0
+            && !createdFabrics.some(((fabric: FabricType) => fabric.code == code))) {
+            const payload: FabricType = {
+                id: createdFabrics.length,
+                name: name,
+                code: code
+            };
+            dispatch(addFabric(payload));
+            setCode("");
+            toast.primary(`${name} - ${code} Başarı İle Eklendi.`);
+        } if (createdFabrics.some(((fabric: FabricType) => fabric.code == code))) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Hatalı İşlem',
+                html: `<b class='text-danger'>${code}</b> kumaş ismini daha önce girdiniz.`,
+                confirmButtonText: 'Tamam'
+            })
+        }
+    };
+
+    const handleDeleteFabric = (code: string) => {
+        if (code) {
+            dispatch(deleteFabricByCode(code));
+            toast.danger(`${name} - ${code} Başarı İle Silindi.`);
+        }
+    };
+
+    const handleOpenEditModal = (code: string, index: number) => {
+        setCodeToEdit({ code, id: index });
+        setEditedCode("");
+    };
+
+    const handleUpdateFabric = (code: string, index: number) => {
+        const payload: FabricType = {
+            id: index,
+            name: name,
+            code: code
+        };
+        if (createdFabrics.some(((fabric: FabricType) => fabric.code == code))) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Hatalı İşlem',
+                html: `<b class='text-danger'>${code}</b> kumaş ismini daha önce girdiniz.`,
+                confirmButtonText: 'Tamam'
+            })
+        } else {
+            dispatch(updateFabricByCode(payload));
+            toast.success(`${name} - ${code} Başarı İle Güncellendi.`);
+        }
+    };
+    // TODO : servis için bağlantı sağlanacak
     return (
         <>
             <Container fluid>
@@ -34,22 +104,28 @@ const CreateFabric = () => {
                                 <button type="button" className="btn btn-primary">Kaydet</button>
                             </CardHeader>
                             <CardBody>
-                                <Form className="app-form">
+                                <Form className="app-form" autoComplete="off">
                                     <Row className="d-flex justify-content-sm-between align-items-center">
                                         <Col xs={6}>
                                             <FormGroup>
-                                                <Label for="username" className="form-label">Kumaş Markası</Label>
-                                                <Input type="text" name="username" id="username" placeholder="Kumaş Markasını Giriniz" />
+                                                <Label for="name" className="form-label">Kumaş Markası</Label>
+                                                <Input type="text" name="name" id="name" disabled={nameDisable}
+                                                    value={name} onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                                        setName(e.target.value)
+                                                    } placeholder="Kumaş Markasını Giriniz" />
                                             </FormGroup>
                                         </Col>
                                         <Col xs={4} >
                                             <FormGroup>
-                                                <Label for="username" className="form-label">Kumaş</Label>
-                                                <Input type="text" name="username" id="username" placeholder="Kumaş İsmini Giriniz" />
+                                                <Label for="code" className="form-label">Kumaş</Label>
+                                                <Input type="text" name="code" id="code"
+                                                    value={code} onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                                        setCode(e.target.value)
+                                                    } placeholder="Kumaş İsmini Giriniz" />
                                             </FormGroup>
                                         </Col>
                                         <Col xs={2} className="text-end">
-                                            <Button color="primary" type="button">Ekle</Button>
+                                            <Button onClick={handleAddFabric} color="primary" type="button">Ekle</Button>
 
                                         </Col>
                                     </Row>
@@ -63,35 +139,35 @@ const CreateFabric = () => {
                                                         <div className="modal fade" id="exampleModal" tabIndex="-1"
                                                             aria-labelledby="exampleModalLabel"
                                                             aria-hidden="true">
-                                                            <form id="add_employee_form">
-                                                                <div className="modal-dialog">
-                                                                    <div className="modal-content">
-                                                                        <div className="modal-header">
-                                                                            <h1 className="modal-title fs-5" id="exampleModalLabel">Kumaş Düzenle
-                                                                            </h1>
-                                                                            <button type="button" className="btn-close m-0"
-                                                                                data-bs-dismiss="modal"
-                                                                                aria-label="Close"></button>
-                                                                        </div>
-                                                                        <div className="modal-body">
-                                                                            <div className="employee mb-3">
-                                                                                <input type="hidden" id="id-field" />
-                                                                                <label className="form-label">Kumaş İsmi</label>
-                                                                                <input className="form-control" type="text" id="employee-field"
-                                                                                    placeholder="employee"
-                                                                                    required />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="modal-footer add">
-                                                                            <input type="button" className="btn btn-secondary"
-                                                                                data-bs-dismiss="modal" value="Close" />
-                                                                            <input type="submit" className="btn btn-primary" id="add-btn"
-                                                                                value="Add" />
-                                                                            <button className="btn btn-success" id="edit-btn">Edit</button>
+                                                            <div className="modal-dialog">
+                                                                <div className="modal-content">
+                                                                    <div className="modal-header">
+                                                                        <h1 className="modal-title fs-5" id="exampleModalLabel">{codeToEdit.code}
+                                                                        </h1>
+                                                                        <button type="button" className="btn-close m-0"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div className="modal-body">
+                                                                        <div className="employee mb-3">
+                                                                            <input type="hidden" id="id-field" />
+                                                                            <label className="form-label">Kumaş İsmi</label>
+                                                                            <Input className="form-control" type="text" id="editedCode"
+                                                                                placeholder="Yeni Kumaş İsmini Giriniz"
+                                                                                required autoComplete="off"
+                                                                                value={editedCode} onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                                                                    setEditedCode(e.target.value)
+                                                                                }
+                                                                            />
                                                                         </div>
                                                                     </div>
+                                                                    <div className="modal-footer add">
+                                                                        <input type="button" className="btn btn-secondary"
+                                                                            data-bs-dismiss="modal" value="Geri" />
+                                                                        <button className="btn btn-success" id="edit-btn" type="button" data-bs-dismiss="modal" onClick={() => handleUpdateFabric(editedCode, codeToEdit.id)}>Düzenle</button>
+                                                                    </div>
                                                                 </div>
-                                                            </form>
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -99,24 +175,34 @@ const CreateFabric = () => {
                                                         <table className="table table-bottom-border  list-table-data align-middle mb-0">
                                                             <thead>
                                                                 <tr className="app-sort">
-                                                                    <th className="sort" data-sort="employee" scope="col">Kumaş İsmi</th>
-                                                                    <th className="sort" data-sort="action" scope="col"></th>
-                                                                    <th className="sort" data-sort="action" scope="col"></th>
+                                                                    <th scope="col-10">Kumaş İsmi</th>
+                                                                    <th scope="col-1"></th>
+                                                                    <th scope="col-1"></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody className="list" id="t-data">
-                                                                <tr>
-                                                                    <td className="employee">Allie Grater</td>
-                                                                    <td className="edit">
-                                                                        <button className="btn edit-item-btn btn-sm btn-success"
-                                                                            data-bs-toggle="modal" data-bs-target="#exampleModal">Düzenle
-                                                                        </button>
-                                                                    </td>
-                                                                    <td className="remove">
-                                                                        <button className="btn remove-item-btn btn-sm btn-danger">Sil</button>
-                                                                    </td>
-                                                                </tr>
-
+                                                                {createdFabrics && createdFabrics.map((fabric: any, index: any) => (
+                                                                    <tr key={index}>
+                                                                        <td >{fabric.code}</td>
+                                                                        <td className="edit">
+                                                                            <button className="btn edit-item-btn btn-sm btn-success"
+                                                                                data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => handleOpenEditModal(fabric.code, index)}>Düzenle
+                                                                            </button>
+                                                                        </td>
+                                                                        <td className="remove">
+                                                                            <button className="btn remove-item-btn btn-sm btn-danger" onClick={() => handleDeleteFabric(fabric.code)}>Sil</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                                {createdFabrics.length > 0 &&
+                                                                    <Card>
+                                                                        <Row>
+                                                                            <Col xs={12}>
+                                                                                <p className="pr-3">{createdFabrics.length} Adet Kumaş Eklendi.</p>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    </Card>
+                                                                }
                                                             </tbody>
                                                         </table>
                                                     </div>

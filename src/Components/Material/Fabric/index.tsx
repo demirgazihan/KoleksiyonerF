@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardBody, CardHeader, Table } from "reactstrap";
 import { type FabricType } from "../../../Types/types"
 import { setFabrics } from '../../../Redux/fabricSlice';
-import fabricListService from "../../../Services/Material/Fabric/FabricListService"
+import fabricListService from "../../../Services/Material/Fabric/FabricService"
 import { Link } from 'react-router-dom'
 import { MaterialRoutes } from '../../../Route/AuthRoutes'
 
