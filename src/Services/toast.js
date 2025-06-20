@@ -31,5 +31,4 @@ const toast = {
         }).showToast();
     },
 }
-
 export default toast;

@@ -32,10 +32,11 @@ const fabricSlice = createSlice({
         },
         updateFabricByCode: (
             state: FabricSliceState,
-            action: PayloadAction<FabricType>
+            action: PayloadAction<any>
         ) => {
+            debugger
             state.createdFabrics = [...state.createdFabrics.map((fabric: FabricType) =>
-                fabric.id != action.payload.id ? fabric : action.payload)];
+                fabric.code != action.payload.oldCode ? fabric : action.payload)];
         },
     }, extraReducers: (builder: ActionReducerMapBuilder<FabricSliceState>) => {
 

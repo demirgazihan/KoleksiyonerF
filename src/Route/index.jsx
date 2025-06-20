@@ -31,6 +31,7 @@ const Education = React.lazy(() => import("../Pages/Dashboard/Education"));
 // MaterialRoutes
 const FabricPage = React.lazy(() => import("../Pages/Material/Fabric"));
 const FabricCreatePage = React.lazy(() => import("../Pages/Material/Fabric/CreateFabric"));
+const FabricDetailPage = React.lazy(() => import("../Pages/Material/Fabric/DetailFabric"));
 
 
 //
@@ -246,6 +247,7 @@ const Routes = () => {
                 // MaterialRoutes
                 { path: MaterialRoutes.FABRIC_PAGE, element: <FabricPage /> },
                 { path: MaterialRoutes.FABRIC_CREATE_PAGE, element: <FabricCreatePage /> },
+                { path: MaterialRoutes.FABRIC_DETAIL_PAGE, element: <FabricDetailPage /> },
 
                 // // AppsRoutes
                 { path: AppsRoutes.CALENDAR_PAGE, element: <Calendar /> },

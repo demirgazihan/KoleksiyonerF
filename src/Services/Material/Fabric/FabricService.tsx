@@ -2,6 +2,7 @@ import axios from "axios";
 import { type AxiosResponse } from "axios";
 import { type FabricType } from "../../../Types/types";
 import storageService from '../../StorageService'
+import SwalMessage from "../../swal";
 
 const currentUser: any = storageService.read("currentUser");
 
@@ -15,7 +16,7 @@ let params = {
     "pageSize": 1000
 }
 
-class FabricListService {
+class FabricService {
 
     BASE_URL = "http://localhost:9001";
 
@@ -25,13 +26,8 @@ class FabricListService {
                 { headers, params })
                 .then((response: AxiosResponse<any, any>) => resolve(response.data.data))
                 .catch((error: any) => {
-                    console.log(error.response.status != 403)
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Kumaşlar Listelenemedi',
-                        text: error.response.status != 403 ? error.response.data.exception.message : "",
-                        confirmButtonText: 'Tamam'
-                    })
+                    SwalMessage.swalErrorMessage("Kumaşlar Listelenemedi",
+                        error.response.status != 403 ? error.response.data.exception.message : "");
                     reject(error)
                 });
         })
@@ -40,10 +36,14 @@ class FabricListService {
     createFabrics(fabrics: Array<FabricType>): Promise<Array<FabricType>> {
         return new Promise((resolve: any, reject: any) => {
             axios.post(`${this.BASE_URL}/api/material/fabric/create`,
-                { headers, ...fabrics })
-                .then((response: AxiosResponse<any, any>) => resolve(response.data.data))
+                [...fabrics], { headers })
+                .then((response: AxiosResponse<any, any>) => {
+                    SwalMessage.swalSuccess("Kumaşlar Başarı İle Eklendi.", 2500);
+                    return resolve(response.data)
+                })
                 .catch((error: any) => {
-                    console.log(error)
+                    SwalMessage.swalErrorMessage("Kumaşlar Eklenemedi",
+                        error.response.status != 403 ? error.response.data.exception.message : "");
                     reject(error)
                 });
         })
@@ -51,4 +51,4 @@ class FabricListService {
 
 }
 
-export default new FabricListService();
+export default new FabricService();

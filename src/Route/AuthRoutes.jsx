@@ -12,6 +12,7 @@ const DashboardRoutes = {
 const MaterialRoutes = {
     FABRIC_PAGE: "/material/fabric",
     FABRIC_CREATE_PAGE: "/material/fabric/create",
+    FABRIC_DETAIL_PAGE: "/material/fabric/detail",
 }
 const AppsRoutes = {
     CALENDAR_PAGE: "/apps/calendar",

@@ -1,6 +1,7 @@
 import { type AxiosResponse } from "axios";
 import axios from "axios";
 import { type LoginResponse } from "../Types/types";
+import SwalMessage from "./swal";
 
 class LoginPageService {
 
@@ -11,12 +12,8 @@ class LoginPageService {
             axios.post(`${this.BASE_URL}/api/auth/signIn`, { ...user })
                 .then((response: AxiosResponse<any, any>) => resolve(response.data.data))
                 .catch((error) => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hatalı Giriş',
-                        text: error.response.data.exception.message,
-                        confirmButtonText: 'Tamam'
-                    })
+                    SwalMessage.swalErrorMessage("Hatalı Giriş",
+                        error.response.status != 403 ? error.response.data.exception.message : "");
                     reject(error);
                 });
 
