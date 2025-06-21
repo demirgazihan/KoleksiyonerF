@@ -49,7 +49,7 @@ const fabricSlice = createSlice({
                 fabric.code != action.payload.oldCode ? fabric : action.payload)];
         },
     }, extraReducers: (builder: ActionReducerMapBuilder<FabricSliceState>) => {
-
+        console.log(builder)
     }
 })
 

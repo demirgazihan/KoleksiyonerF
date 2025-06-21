@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, CardBody, CardHeader, Table } from "reactstrap";
+import { Card, CardBody, CardHeader } from "reactstrap";
 import { type FabricType } from "../../../Types/types"
 import { setFabrics, setSelectedFabric } from '../../../Redux/fabricSlice';
 import fabricService from "../../../Services/Material/Fabric/FabricService"
@@ -10,12 +10,12 @@ import { useNavigate } from 'react-router-dom'
 
 
 const FabricTable = () => {
+    let DataTable: any;
     const toPage = (routes: any, name: String) => {
         dispatch(setSelectedFabric(name));
         navigate(routes);
     }
-    const { currentUser } = useSelector((state: any) => state.app)
-    const { fabrics, selectedFabric } = useSelector((state: any) => state.fabric);
+    const { fabrics } = useSelector((state: any) => state.fabric);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();

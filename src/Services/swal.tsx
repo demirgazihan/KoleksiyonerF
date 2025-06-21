@@ -1,25 +1,27 @@
+import Swal from 'sweetalert2';
+
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
-    didOpen: (toast) => {
+    didOpen: (toast: any) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)
         toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
 })
-let timerInterval;
+let timerInterval: any;
 class SwalMessage {
     // success, error, info , warning
-    toastMessage = (title, icon) => {
+    toastMessage = (title: any, icon: any) => {
         Toast.fire({
             icon,
             title
         })
     };
 
-    swalSuccess = (title, timer) => {
+    swalSuccess = (title: any, timer: any) => {
         Swal.fire({
             icon: "success",
             title,
@@ -27,17 +29,13 @@ class SwalMessage {
             timerProgressBar: false,
             didOpen: () => {
                 Swal.showLoading()
-                const b = Swal.getHtmlContainer().querySelector('b')
-                timerInterval = setInterval(() => {
-                    b.textContent = Swal.getTimerLeft()
-                }, 100)
             },
             willClose: () => {
                 clearInterval(timerInterval)
             }
         })
     };
-    swalErrorMessage = (title, message) => {
+    swalErrorMessage = (title: any, message: any) => {
         Swal.fire({
             icon: 'error',
             title: title,
@@ -45,7 +43,7 @@ class SwalMessage {
             confirmButtonText: 'Tamam'
         })
     };
-    swalSuccessMessage = (title, message) => {
+    swalSuccessMessage = (title: any, message: any) => {
         Swal.fire({
             icon: 'error',
             title: title,
@@ -53,7 +51,7 @@ class SwalMessage {
             confirmButtonText: 'Tamam'
         })
     };
-    swalErrorMessageWithHtml = (title, html) => {
+    swalErrorMessageWithHtml = (title: any, html: any) => {
         Swal.fire({
             icon: 'error',
             title,

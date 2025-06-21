@@ -1,9 +1,7 @@
-import React from 'react';
 import { Col, Container, Row } from "reactstrap";
 import { Link, useNavigate } from 'react-router-dom'
 import loginPageService from '../../../Services/LoginPageService';
-import type { LoginResponse, CheckType } from '../../../Types/types'
-import { setCurrentUser } from '../../../Redux/appSlice';
+import type { LoginResponse } from '../../../Types/types'
 import { loginSchemas } from '../../../Schemas/LoginSchemas';
 import { useFormik } from 'formik';
 import storageService from '../../../Services/StorageService'
@@ -26,7 +24,7 @@ const SignIn = () => {
         login();
     }
 
-    const { values, errors, handleSubmit, handleChange, resetForm } = useFormik({
+    const { values, errors, handleSubmit, handleChange } = useFormik({
         initialValues: {
             email: '',
             password: ''

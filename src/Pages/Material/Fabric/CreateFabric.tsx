@@ -5,16 +5,16 @@ import { useDispatch } from "react-redux";
 import { type FabricType } from '../../../Types/types'
 import { addFabric, deleteFabricByCode, updateFabricByCode } from "../../../Redux/fabricSlice";
 import { useSelector } from "react-redux";
-import SwalMessage from "../../..//Services/swal";
+import SwalMessage from "../../../Services/swal";
 import fabricListService from "../../../Services/Material/Fabric/FabricService"
 import { useNavigate } from 'react-router-dom'
 
 const CreateFabric = () => {
 
-    const [code, setCode] = useState<String>("");
-    const [name, setName] = useState<String>("");
-    const [codeToEdit, setCodeToEdit] = useState<String>("");
-    const [editedCode, setEditedCode] = useState<String>("");
+    const [code, setCode] = useState<string>("");
+    const [name, setName] = useState<string>("");
+    const [codeToEdit, setCodeToEdit] = useState<string>("");
+    const [editedCode, setEditedCode] = useState<string>("");
     const [nameDisable, setNameDisable] = useState<boolean>(false);
 
     const dispatch = useDispatch();
@@ -35,8 +35,8 @@ const CreateFabric = () => {
             && !createdFabrics.some(((fabric: FabricType) => fabric.code == code))) {
             const payload: FabricType = {
                 id: createdFabrics.length,
-                name: name,
-                code: code,
+                name,
+                code,
             };
             dispatch(addFabric(payload));
             setCode("");
@@ -150,7 +150,7 @@ const CreateFabric = () => {
                                                 <CardBody className="p-0">
                                                     <div id="myTable">
                                                         <div className="list-table-header d-flex justify-content-sm-between mb-3">
-                                                            <div className="modal fade" id="exampleModal" tabIndex="-1"
+                                                            <div className="modal fade" id="exampleModal" tabIndex={-1}
                                                                 aria-labelledby="exampleModalLabel"
                                                                 aria-hidden="true">
                                                                 <div className="modal-dialog">
@@ -200,7 +200,7 @@ const CreateFabric = () => {
                                                                             <td >{fabric.code}</td>
                                                                             <td className="edit">
                                                                                 <button className="btn edit-item-btn btn-sm btn-success"
-                                                                                    data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => handleOpenEditModal(fabric.code, index)}>Düzenle
+                                                                                    data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => handleOpenEditModal(fabric.code)}>Düzenle
                                                                                 </button>
                                                                             </td>
                                                                             <td className="remove">

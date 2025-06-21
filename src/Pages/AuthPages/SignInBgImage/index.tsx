@@ -1,5 +1,4 @@
-import React from 'react';
-import { Col, Container, Row, Toast } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -49,11 +48,11 @@ const SignInBgImage = () => {
         }
     }
 
-    const submit = (values: any, action: any) => {
+    const submit = (values: any) => {
         login(values.email, values.password);
     }
 
-    const { values, errors, handleSubmit, handleChange, resetForm } = useFormik({
+    const { values, handleSubmit, handleChange } = useFormik({
         initialValues: {
             email: '',
             password: ''

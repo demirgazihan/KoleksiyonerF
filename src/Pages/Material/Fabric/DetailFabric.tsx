@@ -2,7 +2,6 @@
 
 import { Col, Container, Row } from "reactstrap";
 import { MaterialRoutes } from '../../../Route/AuthRoutes'
-import DataTable from 'datatables.net';
 import 'datatables.net-dt/css/dataTables.dataTables.css';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import FabricDetailTable from '../../../Components/Material/Fabric/DetailFabric';
