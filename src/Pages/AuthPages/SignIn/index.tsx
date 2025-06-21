@@ -1,8 +1,6 @@
 import React from 'react';
 import { Col, Container, Row } from "reactstrap";
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import loginPageService from '../../../Services/LoginPageService';
 import type { LoginResponse, CheckType } from '../../../Types/types'
 import { setCurrentUser } from '../../../Redux/appSlice';
@@ -13,7 +11,6 @@ import storageService from '../../../Services/StorageService'
 const SignIn = () => {
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const login = async () => {
         const payload: LoginResponse = {

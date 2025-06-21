@@ -231,7 +231,7 @@ const Routes = () => {
     let element = [
         {
             path: "/",
-            element: <Layout />,
+            element: <Maintenance />,
             children: [
                 // IndependentRoutes
                 { path: IndependentRoutes.WIDGETS_PAGE, element: <Widget /> },

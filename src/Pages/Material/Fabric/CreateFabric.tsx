@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { type FabricType } from '../../../Types/types'
 import { addFabric, deleteFabricByCode, updateFabricByCode } from "../../../Redux/fabricSlice";
 import { useSelector } from "react-redux";
-import toast from "../../..//Services/toast";
 import SwalMessage from "../../..//Services/swal";
 import fabricListService from "../../../Services/Material/Fabric/FabricService"
 import { useNavigate } from 'react-router-dom'

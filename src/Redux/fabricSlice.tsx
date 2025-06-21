@@ -5,20 +5,30 @@ import { type FabricType } from '../Types/types'
 
 export interface FabricSliceState {
     fabrics: FabricType[],
-    createdFabrics: FabricType[]
+    createdFabrics: FabricType[],
+    fabricDetailList: FabricType[],
+    selectedFabric: String
 }
 
 const initialState: FabricSliceState = {
     fabrics: [],
-    createdFabrics: []
+    createdFabrics: [],
+    fabricDetailList: [],
+    selectedFabric: ""
 }
 
 const fabricSlice = createSlice({
     name: 'fabric',
     initialState,
     reducers: {
+        setSelectedFabric: (state: FabricSliceState, action: PayloadAction<String>) => {
+            state.selectedFabric = action.payload;
+        },
         setFabrics: (state: FabricSliceState, action: PayloadAction<FabricType[]>) => {
             state.fabrics = [...action.payload];
+        },
+        setFabricDetailList: (state: FabricSliceState, action: PayloadAction<FabricType[]>) => {
+            state.fabricDetailList = [...action.payload];
         },
         addFabric: (state: FabricSliceState, action: PayloadAction<FabricType>) => {
             state.createdFabrics = [...state.createdFabrics, action.payload];
@@ -43,5 +53,5 @@ const fabricSlice = createSlice({
     }
 })
 
-export const { setFabrics, addFabric, deleteFabricByCode, updateFabricByCode } = fabricSlice.actions
+export const { setFabrics, addFabric, deleteFabricByCode, updateFabricByCode, setFabricDetailList, setSelectedFabric } = fabricSlice.actions
 export default fabricSlice.reducer
